@@ -10,7 +10,7 @@ var states = {
 
 //carregando o Assets
 var graphicAssets = {
-    ship:{URL:'assets/ship.png', name:'ship'},
+    ship:{URL:'assets/ship.png',name:'ship'},
     bullet:{URL:'assets/bullet.png', name:'bullet'},    
     
     asteroidLarge:{URL:'assets/asteroidLarge.png', name:'asteroidLarge'},
