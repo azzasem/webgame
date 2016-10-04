@@ -84,12 +84,20 @@ gameState.prototype = {
         game.physics.enable(this.shipSprite, Phaser.Physics.ARCADE);
         this.shipSprite.body.drag.set(shipProperties.drag);
         this.shipSprite.body.maxVelocity.set(shipProperties.maxVelocity);
+        
+        this.bulletGroup.enableBody = true;
+        this.bulletGroup.physicsBodyType = Phaser.Physics.Arcade;
+        this.bulletGroup.creatMultiple(bulletProperties.maxCount, graphicAssets.bullet.name);
+        this.bulletGroup.setAll('anchor.x', 0.5);
+        this.bulletGroup.setAll('anchor.y', 0.5);
+        this.bulletGroup.setAll('lifespan', bulletProperties.lifespan);
     },
     
     initKeyboard: function(){
         this.key_left = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);  
         this.key_right = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
         this.key_thrust = game.input.keyboard.addKey(Phaser.Keyboard.UP);
+        this.key_fire = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     },
     
     checkPlayerInput: function(){
