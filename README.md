@@ -1,6 +1,6 @@
 # Asteroids - Web Development
 <div>
-   <img  style="margin-left: 900px;" src="assets/asteroidsLogo.jpg">
+   <img src="assets/asteroidsLogo.jpg" align="left">
 </div>
 <b>Projeto de jogo em HTML5.</b>
 
