@@ -28,7 +28,7 @@ var shipProperties ={
 };
 
 var bulletProperties = {
-  speed: 400,
+    speed: 400,
     interval: 250,
     lifespan: 2000,
     maxCount: 30,
@@ -68,6 +68,7 @@ gameState.prototype = {
     update: function () {
         this.checkPlayerInput();
         this.checkBoundaries(this.shipSprite);
+        this.bulletGroup.forEachExists(this.checkBoundaries, this);
     },
     //Cria nave.
     initGraphics: function () {
@@ -86,11 +87,11 @@ gameState.prototype = {
         this.shipSprite.body.maxVelocity.set(shipProperties.maxVelocity);
         
         this.bulletGroup.enableBody = true;
-        this.bulletGroup.physicsBodyType = Phaser.Physics.Arcade;
-        this.bulletGroup.creatMultiple(bulletProperties.maxCount, graphicAssets.bullet.name);
+        this.bulletGroup.physicsBodyType = Phaser.Physics.ARCADE;
+        this.bulletGroup.createMultiple(bulletProperties.maxCount, graphicAssets.bullet.name);
         this.bulletGroup.setAll('anchor.x', 0.5);
         this.bulletGroup.setAll('anchor.y', 0.5);
-        this.bulletGroup.setAll('lifespan', bulletProperties.lifespan);
+        this.bulletGroup.setAll('lifespan', bulletProperties.lifeSpan);
     },
     
     initKeyboard: function(){
@@ -114,6 +115,10 @@ gameState.prototype = {
         }else{
             this.shipSprite.body.acceleration.set(0);
         }
+        
+        if(this.key_fire.isDown){
+            this.fire();
+        }
     },
     
     checkBoundaries: function(sprite){
@@ -127,6 +132,25 @@ gameState.prototype = {
         }else if(sprite.y > game.height){
             sprite.y = 0;
         }
+    },
+    
+    fire: function(){
+        if(game.time.now > this.bulletInterval){
+            var bullet = this.bulletGroup.getFirstExists(false);
+            
+            if (bullet) {
+                var length = this.shipSprite.width * 0.5;
+                var x = this.shipSprite.x + (Math.cos(this.shipSprite.rotation) * length);
+                var y = this.shipSprite.y + (Math.sin(this.shipSprite.rotation) * length);
+                
+                bullet.reset(x, y);
+                bullet.lifespan = bulletProperties.lifeSpan;
+                bullet.rotation = this.shipSprite.rotation;
+                
+                game.physics.arcade.velocityFromRotation(this.shipSprite.rotation, bulletProperties.speed, bullet.body.velocity);
+                this.bulletInterval = game.time.now + bulletProperties.interval;
+            }
+        }    
     },
 };
 
