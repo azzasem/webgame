@@ -2,6 +2,8 @@
 var gameProperties = {
     screenWidth: 640,
     screenHeight: 480,
+
+    delayToStartLevel: 3,
 };
 
 var states = {
@@ -15,6 +17,10 @@ var graphicAssets = {
     asteroidLarge:{URL:'assets/asteroidLarge.png', name:'asteroidLarge'},
     asteroidMedium:{URL:'assets/asteroidMedium.png', name:'asteroidMedium'},
     asteroidSmall:{URL:'assets/asteroidSmall.png', name:'asteroidSmall'},
+};
+
+var soundAssets = {
+    fire:{URL:['assets/fire.m4a', 'assets/fire.ogg'], name='fire'},
 };
 
 var shipProperties = {
@@ -65,6 +71,8 @@ var gameState = function (game){
 
     this.shipLives = shipProperties.startingLives;
     this.tf_lives;
+    this.score = 0;
+    this.tf_score;
 };
 
 gameState.prototype = {
@@ -104,6 +112,10 @@ gameState.prototype = {
         this.asteroidGroup = game.add.group();
 
         this.tf_lives = game.add.text(20, 10, shipProperties.startingLives, fontAssets.counterFontStyle);
+
+        this.tf_score = game.add.text(gameProperties.screenWidth -20, 10, "0", fontAssets.counterFontStyle);
+        this.tf_score.align = 'right';
+        this.tf_score.anchor.set(1, 0);
     },
 
     initPhysics: function () {
@@ -226,6 +238,11 @@ gameState.prototype = {
         }
 
         this.splitAsteroid(asteroid);
+        this.updateScore(asteroidProperties[asteroid.key].score);
+
+        if (!this.asteroidGroup.countLiving()) {
+            game.time.events.add(Phaser.Timer.SECOND * gameProperties.delayToStartLevel, this.nextLevel, this);
+        }
     },
 
     destroyShip: function () {
@@ -246,6 +263,22 @@ gameState.prototype = {
         if (asteroidProperties[asteroid.key].nextSize) {
             this.createAsteroid(asteroid.x, asteroid.y, asteroidProperties[asteroid.key].nextSize, asteroidProperties[asteroid.key].pieces);
         }
+    },
+
+    updateScore: function(score){
+        this.score += score;
+        this.tf_score.text = this.score;
+    },
+
+    nextLevel: function(){
+        this.asteroidGroup.removeAll(true);
+
+        if(this.asteroidsCount < asteroidProperties.maxAsteroids){
+          this.asteroidsCount += asteroidProperties.incrementAsteroids;
+
+        }
+
+        this.resetAsteroids();
     },
 };
 
