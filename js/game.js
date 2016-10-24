@@ -340,7 +340,7 @@ var mainState = function(game){
 
 mainState.prototype = {
     create: function () {
-      var startInstructions = 'Clique para Iniciar \n\nSeta para Cima - Acelera.\n\nSetas Laterais - Manobrar\n\nEspaço - Disparar.';
+      var startInstructions = 'Clique para Iniciar.\n\nSeta para Cima - Acelera.\n\nSetas Laterais - Manobrar\n\nEspaço - Disparar.';
 
       this.tf_start = game.add.text(game.world.centerX, game.world.centerY, startInstructions, fontAssets.counterFontStyle);
       this.tf_start.align = 'center';
