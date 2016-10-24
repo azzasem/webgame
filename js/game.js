@@ -3,6 +3,7 @@ var gameProperties = {
     screenHeight: 480,
 
     delayToStartLevel: 3,
+    padding: 30,
 };
 
 var states = {
@@ -67,15 +68,15 @@ var gameState = function (game){
     this.key_fire;
 
     this.bulletGroup;
-    this.bulletInterval = 0;
+
 
     this.asteroidGroup;
-    this.asteroidsCount = asteroidProperties.startingAsteroids;
 
-    this.shipLives = shipProperties.startingLives;
+
+
     this.tf_lives;
 
-    this.score = 0;
+
     this.tf_score;
 
     this.sndDestroyed;
@@ -94,6 +95,13 @@ gameState.prototype = {
 
         game.load.audio(soundAssets.destroyed.name, soundAssets.destroyed.URL);
         game.load.audio(soundAssets.fire.name, soundAssets.fire.URL);
+    },
+
+    init: function () {
+      this.bulletInterval = 0;
+      this.asteroidsCount = asteroidProperties.startingAsteroids;
+      this.shipLives = shipProperties.startingLives;
+      this.score = 0;
     },
 
     create: function () {
@@ -183,17 +191,17 @@ gameState.prototype = {
     },
 
     checkBoundaries: function (sprite) {
-        if (sprite.x < 0) {
-            sprite.x = game.width;
-        } else if (sprite.x > game.width) {
-            sprite.x = 0;
-        }
+      if (sprite.x + gameProperties.padding < 0) {
+          sprite.x = game.width + gameProperties.padding;
+      } else if (sprite.x - gameProperties.padding> game.width) {
+          sprite.x = -gameProperties.padding;
+      }
 
-        if (sprite.y < 0) {
-            sprite.y = game.height;
-        } else if (sprite.y > game.height) {
-            sprite.y = 0;
-        }
+      if (sprite.y + gameProperties.padding < 0) {
+          sprite.y = game.height + gameProperties.padding;
+      } else if (sprite.y - gameProperties.padding> game.height) {
+          sprite.y = -gameProperties.padding;
+      }
     },
 
     fire: function () {
@@ -330,7 +338,7 @@ var mainState = function(game){
 
 mainState.prototype = {
     create: function () {
-      var startInstructions = 'Click to Start -\n\nUP arrow key for thrust.\n\nLEFT and RIGHT arrow keys to turn.\n\nSPACE key to fire.';
+      var startInstructions = 'Clique para Iniciar -\n\nSeta para Cima - Acelera.\n\nSetas Laterais - Manobrar\n\nEspaço - Disparar.';
 
       this.tf_start = game.add.text(game.world.centerX, game.world.centerY, startInstructions, fontAssets.counterFontStyle);
       this.tf_start.align = 'center';
@@ -348,7 +356,3 @@ var game = new Phaser.Game(gameProperties.screenWidth, gameProperties.screenHeig
 game.state.add(states.main, mainState);
 game.state.add(states.game, gameState);
 game.state.start(states.main);
-/*
-var game = new Phaser.Game(gameProperties.screenWidth, gameProperties.screenHeight, Phaser.AUTO, 'gameDiv');
-game.state.add(states.game, gameState);
-game.state.start(states.game); */
