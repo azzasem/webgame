@@ -1,3 +1,4 @@
+//JOGUINHO MANEIRO BEGINS AQUI!! -- SERÁ QUE O PROFESSOR ESTÁ LENDO MEU CÓDIGO? EIS A QUESTÃO.
 var gameProperties = {
     screenWidth: 640,
     screenHeight: 480,
@@ -10,7 +11,7 @@ var states = {
     main: "main",
     game: "game",
 };
-
+//Carrega os Assets do jogo.
 var graphicAssets = {
     ship:{URL:'assets/ship.png', name:'ship'},
     bullet:{URL:'assets/bullet.png', name:'bullet'},
@@ -57,7 +58,7 @@ var asteroidProperties = {
 var fontAssets = {
     counterFontStyle:{font: '20px Arial', fill: '#FFFFFF', align: 'center'},
 };
-
+//Inseri o que foi carregado no game
 var gameState = function (game){
     this.shipSprite;
     this.shipIsInvulnerable;
@@ -83,6 +84,7 @@ var gameState = function (game){
     this.sndFire;
 };
 
+//Carrega o game
 gameState.prototype = {
 
     preload: function () {
@@ -96,7 +98,7 @@ gameState.prototype = {
         game.load.audio(soundAssets.destroyed.name, soundAssets.destroyed.URL);
         game.load.audio(soundAssets.fire.name, soundAssets.fire.URL);
     },
-
+    //GAMBEEEEEEETAAAAAAAAA
     init: function () {
       this.bulletInterval = 0;
       this.asteroidsCount = asteroidProperties.startingAsteroids;
@@ -338,7 +340,7 @@ var mainState = function(game){
 
 mainState.prototype = {
     create: function () {
-      var startInstructions = 'Clique para Iniciar -\n\nSeta para Cima - Acelera.\n\nSetas Laterais - Manobrar\n\nEspaço - Disparar.';
+      var startInstructions = 'Clique para Iniciar\n\nSeta para Cima - Acelera.\n\nSetas Laterais - Manobrar\n\nEspaço - Disparar.';
 
       this.tf_start = game.add.text(game.world.centerX, game.world.centerY, startInstructions, fontAssets.counterFontStyle);
       this.tf_start.align = 'center';
